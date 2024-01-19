@@ -1,0 +1,116 @@
+<!-- templates/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kannada Learning Game</title>
+
+    <!-- Add your styles here -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #FFFFE0; /* Set the background color */
+        }
+
+        .app {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .question-display {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .options {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .option-button, .speak-button {
+            font-size: 16px;
+            margin: 5px;
+            padding: 10px;
+            cursor: pointer;
+            background-color: #FFFFE0; /* Set the background color */
+            color: black; /* Set the font color */
+        }
+
+        .speak-button {
+            background-color: #3498db; /* Set a different background color for the Speak button */
+            color: white; /* Set the font color for the Speak button */
+        }
+
+        .image-display img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <div class="question-display">
+            <p>Translate the Kannada word: <span id="question"></span></p>
+        </div>
+        <div class="options">
+            <button class="option-button" id="option0" onclick="handleOptionClick(this)">Bird</button>
+            <button class="option-button" id="option1" onclick="handleOptionClick(this)">Flower</button>
+            <button class="option-button" id="option2" onclick="handleOptionClick(this)">House</button>
+            <button class="option-button" id="option3" onclick="handleOptionClick(this)">Tree</button>
+        </div>
+        <button class="speak-button" onclick="handleSpeakClick()">Speak</button>
+        <div class="image-display">
+            <img id="image" src="{{ url_for('static', filename='images/placeholder_image.png') }}" alt="Image">
+        </div>
+    </div>
+
+    <script>
+        function handleOptionClick(button) {
+            var selectedOption = button.innerText;
+            var correctTranslation = "{{ question_english }}";
+
+            // Convert the selected option to a number (0, 1, 2, 3)
+            var userChoice = -1;
+            for (var i = 0; i < 4; i++) {
+                if (button === document.getElementById('option' + i)) {
+                    userChoice = i;
+                    break;
+                }
+            }
+
+            // Make an AJAX request to check the answer on the server
+            fetch(`/check_answer/${userChoice}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    
+                    // Handle the server response (e.g., update score, get a new question)
+                    // For now, just log the result
+                    if (data.is_correct) {
+                        console.log("Correct! Good job!");
+                    } else {
+                        console.log(`Wrong! The correct translation is: ${correctTranslation}`);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        function handleSpeakClick() {
+            console.log("Speak button clicked");
+
+            // Handle speak click logic here
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,36 @@
+/* static/styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.app {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.question-display {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.options {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.option-button, .speak-button {
+    font-size: 16px;
+    margin: 5px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.image-display img {
+    max-width: 100%;
+    height: auto;
+    margin-top: 20px;
+}
